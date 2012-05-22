@@ -4,12 +4,11 @@
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
               as the first entry and export the buildfile again. -->
-<project basedir="." default="build" name="PHPInstrument" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project basedir="." default="build" name="PHPCoverage" xmlns:ivy="antlib:org.apache.ivy.ant">
 	
-	<ivy:settings file="../../Cloudbox/Build/ivysettings.xml"/>
+	<ivy:settings file="../../Build/ivysettings.xml"/>
 	
     <property environment="env"/>
-    <property name="ECLIPSE_HOME" value="../../../../eclipse"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="JavaTarget" value="1.6"/>
     <property name="JavaSource" value="1.6"/>
@@ -21,7 +20,11 @@
         <pathelement location="lib/commons-io-2.1.jar"/>
         <pathelement location="lib/commons-lang-2.4.jar"/>
         <pathelement location="lib/json-1.0.jar"/>
-        <pathelement location="lib/wildcard-1.0.jar"/>
+        <pathelement location="lib/htmllexer-1.0.jar"/>
+        <pathelement location="lib/htmlparser-1.0.jar"/>
+        <pathelement location="lib/log4j-1.2.16.jar"/>
+        <pathelement location="lib/jsch-0.1.44.jar"/>
+        <pathelement location="lib/scp-1.0.jar"/>
     </path>
 	
     <target name="init" depends="resolve" description="">
@@ -29,11 +32,6 @@
         <mkdir dir="${bin}"/>
         <copy includeemptydirs="false" todir="${bin}">
             <fileset dir="src">
-                <exclude name="**/*.java"/>
-            </fileset>
-        </copy>
-        <copy includeemptydirs="false" todir="${bin}">
-            <fileset dir="resources">
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
@@ -57,10 +55,6 @@
             <src path="src"/>
             <classpath refid="PHPInstrument.classpath"/>
         </javac>
-        <javac debug="true" includeantruntime="false" debuglevel="${debuglevel}" destdir="${bin}" source="${JavaSource}" target="${JavaTarget}">
-            <src path="resources"/>
-            <classpath refid="PHPInstrument.classpath"/>
-        </javac>
     </target>
 	
 	<target name="jar" description="">
@@ -68,17 +62,4 @@
 		</jar>
 	</target>
 	
-    <target name="InstrumentPHP">
-        <java classname="com.cloudbox.php.InstrumentPHP" failonerror="true" fork="yes">
-            <arg line="&quot;E:/GITWorkSpace_new/CloudBox/Other Projects/PHPInstrument/resources/cbdata.php&quot; &quot;E:/GITWorkSpace_new/CloudBox/Other Projects/PHPInstrument/cbdata.php&quot;"/>
-            <classpath refid="PHPInstrument.classpath"/>
-        </java>
-    </target>
-	
-    <target name="InstrumentPHP_moreFiles">
-        <java classname="com.cloudbox.php.InstrumentPHP" failonerror="true" fork="yes">
-            <arg line="&quot;E:\temp\Cloudbox\Dashboard&quot; &quot;E:\temp\Cloudbox\DashboardAfterInstrument&quot; &quot;forCoverage\finalize.php,forCoverage\init.php,forCoverage\snippet.php,info.php&quot;"/>
-            <classpath refid="PHPInstrument.classpath"/>
-        </java>
-    </target>
 </project>

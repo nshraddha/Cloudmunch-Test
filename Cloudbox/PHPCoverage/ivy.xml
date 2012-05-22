@@ -4,7 +4,9 @@
         <dependency org="cloudbox" name="json" rev="1.0"/>
         <dependency org="cloudbox" name="htmllexer" rev="1.0"/>
         <dependency org="cloudbox" name="htmlparser" rev="1.0"/>
+        <dependency org="cloudbox" name="scp" rev="1.0"/>
         <dependency org="jcraft" name="jsch" rev="0.1.44"/>
         <dependency org="org" name="commons-lang" rev="2.4"/>
+        <dependency org="org" name="commons-io" rev="2.1"/>
     </dependencies>
 </ivy-module>

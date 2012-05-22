@@ -46,11 +46,16 @@ public class PHPCoverage {
 	public static void main(String[] args) {
 		String targetName = args[0];
 		String reportFileName = args[1];
-		String projectName = System.getProperty(StringConstants.CLOUDBOX_PROJECTNAME);
-		String jobName = System.getProperty(StringConstants.CLOUDBOX_JOBNAME);
-		String domainURL = System.getProperty(StringConstants.CLOUDBOX_DOMAINURL);
-		String workingDir = System.getProperty(StringConstants.CLOUDBOX_BUILDLOCATION) + File.separator + StringConstants.RESULT_BASEFOLDER + File.separator + StringConstants.RESULT_WORKINGFOLDER;
+		String projectName = System.getenv(StringConstants.CLOUDBOX_PROJECTNAME);
+		String jobName = System.getenv(StringConstants.CLOUDBOX_JOBNAME);
+		String domainURL = System.getenv(StringConstants.CLOUDBOX_DOMAINURL);
+		String workingDir = System.getenv(StringConstants.CLOUDBOX_BUILDLOCATION) + File.separator + StringConstants.RESULT_BASEFOLDER + File.separator + StringConstants.RESULT_WORKINGFOLDER;
 		JSONObject outputData = new JSONObject();
+		
+		System.out.println("projectName : " + projectName);
+		System.out.println("jobName : " + jobName);
+		System.out.println("domainURL : " + domainURL);
+		System.out.println("workingDir : " + workingDir);
 		// projectName = "Cloudbox";
 		// jobName = "quick";
 		// domainURL = "http://dev.cloudmunch.com";
@@ -63,8 +68,8 @@ public class PHPCoverage {
 		// mapData.put("reportLocation",
 		// "E:/temp/Cloudbox/coveragetest.html/index.html");
 
-		if (mapData.containsKey(StringConstants.STR_SERVERNAME) && mapData.containsKey(StringConstants.STR_REPORTLOCATION)) {
-			String serverName = mapData.get(StringConstants.STR_SERVERNAME);
+		if (mapData.containsKey(StringConstants.RESULT_TECHSTACK_SERVERNAME) && mapData.containsKey(StringConstants.STR_REPORTLOCATION)) {
+			String serverName = mapData.get(StringConstants.RESULT_TECHSTACK_SERVERNAME);
 			String reportLocation = mapData.get(StringConstants.STR_REPORTLOCATION);
 
 			// need to replace local deployserver to remote context server
@@ -137,6 +142,7 @@ public class PHPCoverage {
 						scp.execute();
 					} catch (ScpException e) {
 						outputData.put("message", "Couldn't get the Reports Copied");
+						outputData.put("cause", e.getMessage());
 						e.printStackTrace();
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -163,6 +169,8 @@ public class PHPCoverage {
 
 		BufferedWriter output;
 		try {
+			File f = new File(reportFileName);
+			f.getParentFile().mkdirs();
 			output = new BufferedWriter(new FileWriter(reportFileName));
 			output.write(outputData.toString());
 			output.close();
