@@ -6,7 +6,7 @@
               as the first entry and export the buildfile again. -->
 <project basedir="." default="build" name="PHPCoverage" xmlns:ivy="antlib:org.apache.ivy.ant">
 	
-	<ivy:settings file="../../Build/ivysettings.xml"/>
+	<ivy:settings file="../../Cloudbox/Build/ivysettings.xml"/>
 	
     <property environment="env"/>
     <property name="debuglevel" value="source,lines,vars"/>
